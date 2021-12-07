@@ -1,7 +1,10 @@
 package com.switchfully.order.api.controllers;
 
 
+import com.switchfully.order.domain.exceptions.InvalidAdminInformationException;
 import com.switchfully.order.domain.exceptions.InvalidCustomerException;
+import com.switchfully.order.domain.exceptions.InvalidFieldValueException;
+import com.switchfully.order.domain.exceptions.InvalidItemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,11 +19,21 @@ public class ControllerExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
-
-    @ExceptionHandler({NullPointerException.class, InvalidCustomerException.class})
-    protected void userProblem(RuntimeException ex ,
+    @ExceptionHandler({
+            NullPointerException.class,
+            InvalidCustomerException.class,
+            InvalidItemException.class,
+            InvalidFieldValueException.class
+    })
+    protected void creatingElementError(RuntimeException ex ,
                                      HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidAdminInformationException.class)
+    protected void invalidUserError(InvalidAdminInformationException ex, HttpServletResponse response) throws IOException{
+        logger.error(ex.getMessage());
+        response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
 }
