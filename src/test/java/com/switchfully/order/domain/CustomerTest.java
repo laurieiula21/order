@@ -11,7 +11,7 @@ class CustomerTest {
 
     @Test
     void givenACustomerToAddWithNullFields_whenTryingToCreateTheCustomer_thenMIssingFieldExceptionIsThrown() {
-        //Assertions.assertThat()
+
         Assertions.assertThatExceptionOfType(MissingFieldException.class).isThrownBy(() -> new Customer.CustomerBuilder()
                 .setFirstname(null)
                 .setLastname("Iula")

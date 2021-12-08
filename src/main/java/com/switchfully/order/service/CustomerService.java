@@ -2,11 +2,16 @@ package com.switchfully.order.service;
 
 import com.switchfully.order.domain.Customer;
 import com.switchfully.order.domain.exceptions.InvalidCustomerException;
+import com.switchfully.order.domain.exceptions.UsernameAlreadyExistsException;
 import com.switchfully.order.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -27,5 +32,28 @@ public class CustomerService {
 
     public Map<String, Customer> getCustomerRepository() {
         return customerRepository.getCustomerList();
+    }
+
+    public String validateUsername(String username){
+        List<Customer> customerFoundForUsername = customerRepository.getCustomerList().values().stream()
+                .filter(customer -> customer.getUsername().equals(username))
+                .collect(Collectors.toList());
+        if (!customerFoundForUsername.isEmpty()){
+            throw new UsernameAlreadyExistsException("The username " + username + " is already taken...");
+        }
+        return username;
+    }
+
+    public Customer validateCustomerAuthorisation(String header){
+        String decodedUsernameAndPassword = new String(Base64.getDecoder().decode(header.substring("Basic ".length())));
+        String headerUsername = decodedUsernameAndPassword.substring(0, decodedUsernameAndPassword.indexOf(":"));
+        String headerPassword = decodedUsernameAndPassword.substring(decodedUsernameAndPassword.indexOf(":")+1);
+
+        Customer customer = customerRepository.getByUsername(headerUsername);
+        if (customer == null || !customer.getPassword().equals(headerPassword)){
+            throw new NoSuchElementException("Username or password is wrong");
+        }
+        return customer;
+
     }
 }

@@ -27,6 +27,8 @@ public class CustomerController {
     public CustomerDto createNewCustomer(@RequestBody CustomerDto customerDto){
         logger.info("Create new customer method is starting...");
 
+        customerService.validateUsername(customerDto.getUsername());
+
         Customer customer = customerMapper.mapDtoToCustomer(customerDto);
 
         Customer savedCustomer = customerService.saveCustomer(customer);

@@ -20,4 +20,8 @@ public class ItemRepository {
         itemList.put(item.getId(), item);
         return itemList.get(item.getId());
     }
+
+    public Item getById(String id) {
+        return itemList.get(id);
+    }
 }

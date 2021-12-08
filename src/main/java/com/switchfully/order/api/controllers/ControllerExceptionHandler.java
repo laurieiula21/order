@@ -1,10 +1,7 @@
 package com.switchfully.order.api.controllers;
 
 
-import com.switchfully.order.domain.exceptions.InvalidAdminInformationException;
-import com.switchfully.order.domain.exceptions.InvalidCustomerException;
-import com.switchfully.order.domain.exceptions.InvalidFieldValueException;
-import com.switchfully.order.domain.exceptions.InvalidItemException;
+import com.switchfully.order.domain.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,7 +21,9 @@ public class ControllerExceptionHandler {
             NullPointerException.class,
             InvalidCustomerException.class,
             InvalidItemException.class,
-            InvalidFieldValueException.class
+            InvalidFieldValueException.class,
+            NoSuchElementException.class,
+            UsernameAlreadyExistsException.class
     })
     protected void creatingElementError(RuntimeException ex ,
                                      HttpServletResponse response) throws IOException {

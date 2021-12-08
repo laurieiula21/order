@@ -15,17 +15,22 @@ public class CustomerMapper {
                 .setEmail(customerDto.getEmail())
                 .setAddress(customerDto.getAddress())
                 .setPhoneNumber(customerDto.getPhoneNumber())
+                .setUsername(customerDto.getUsername())
+                .setPassword(customerDto.getPassword())
                 .createCustomer();
     }
 
     public CustomerDto mapCustomerToDto(Customer customer){
-        return new CustomerDto(
-                customer.getId(),
-                customer.getFirstname(),
-                customer.getLastname(),
-                customer.getEmail(),
-                customer.getAddress(),
-                customer.getPhoneNumber()
-        );
+
+        return new CustomerDto.CustomerDtoBuilder()
+                .setId(customer.getId())
+                .setFirstname(customer.getFirstname())
+                .setLastname(customer.getLastname())
+                .setEmail(customer.getEmail())
+                .setAddress(customer.getAddress())
+                .setPhoneNumber(customer.getPhoneNumber())
+                .setUsername(customer.getUsername())
+                .setPassword(customer.getPassword())
+                .createCustomerDto();
     }
 }

@@ -29,4 +29,8 @@ public class ItemService {
     public Map<String, Item> getItemRepository() {
         return itemRepository.getItemList();
     }
+
+    public Item getItemById(String id){
+        return itemRepository.getById(id);
+    }
 }

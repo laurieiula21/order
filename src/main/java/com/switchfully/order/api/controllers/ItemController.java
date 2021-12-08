@@ -25,9 +25,10 @@ public class ItemController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto createItem(@RequestHeader(required = false) String header, @RequestBody ItemDto itemDto){
+    public ItemDto createItem(@RequestHeader(required = false) String authorization, @RequestBody ItemDto itemDto){
         logger.info("Create item method is starting...");
-        Admin.isAuthorized(header);
+        logger.info(authorization);
+        Admin.isAuthorized(authorization);
         Item item = new Item.ItemBuilder()
                 .setName(itemDto.getName())
                 .setDescription(itemDto.getDescription())
