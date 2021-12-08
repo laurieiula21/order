@@ -57,4 +57,17 @@ public class CustomerController {
         return customerDtosList;
     }
 
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto getCustomerById(@RequestHeader String authorization, @PathVariable("id") String id){
+        logger.info("Get customer by id method is starting...");
+        Admin.isAuthorized(authorization);
+
+        Customer customer = customerService.getCustomerById(id);
+        CustomerDto customerDto = customerMapper.mapCustomerToDto(customer);
+        logger.info("Get customer by id method executed succefully !");
+
+        return customerDto;
+    }
+
 }

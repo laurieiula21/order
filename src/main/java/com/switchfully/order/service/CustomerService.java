@@ -1,6 +1,7 @@
 package com.switchfully.order.service;
 
 import com.switchfully.order.domain.Customer;
+import com.switchfully.order.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.order.domain.exceptions.InvalidCustomerException;
 import com.switchfully.order.domain.exceptions.UsernameAlreadyExistsException;
 import com.switchfully.order.repository.CustomerRepository;
@@ -46,10 +47,17 @@ public class CustomerService {
             throw new NoSuchElementException("Username or password is wrong");
         }
         return customer;
-
     }
 
     public Collection<Customer> getAllCustomers() {
         return customerRepository.getCustomerList().values();
+    }
+
+    public Customer getCustomerById(String id) {
+        Customer customer = customerRepository.getById(id);
+        if (customer == null){
+            throw new CustomerNotFoundException("The customer not found for id " + id);
+        }
+        return customer;
     }
 }

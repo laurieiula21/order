@@ -30,4 +30,7 @@ public class CustomerRepository {
     }
 
 
+    public Customer getById(String id) {
+        return customerList.get(id);
+    }
 }

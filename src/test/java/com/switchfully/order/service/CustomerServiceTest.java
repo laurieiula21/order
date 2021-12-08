@@ -2,6 +2,7 @@ package com.switchfully.order.service;
 
 import com.switchfully.order.domain.Address;
 import com.switchfully.order.domain.Customer;
+import com.switchfully.order.domain.exceptions.CustomerNotFoundException;
 import com.switchfully.order.domain.exceptions.InvalidCustomerException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,7 +75,40 @@ class CustomerServiceTest {
                 .createCustomer();
         customerService.saveCustomer(customer3);
 
-
         Assertions.assertThat(customerService.getAllCustomers()).contains(customer1, customer2, customer3);
+    }
+
+    @Test
+    void givenACustomerId_whenGettingCustomerWithId_thenCorrespondingCustomerIsReturned() {
+
+        Customer customer = new Customer.CustomerBuilder()
+                .setFirstname("Laurie")
+                .setLastname("Iula")
+                .setEmail("laurie@mail.com")
+                .setAddress(new Address(24, "rue Edith Cavell", 1180, "Uccle", "Belgium"))
+                .setPhoneNumber("0462587631")
+                .setUsername("laurie")
+                .setPassword("laurie")
+                .createCustomer();
+        customerService.saveCustomer(customer);
+
+        Assertions.assertThat(customerService.getCustomerById(customer.getId())).isEqualTo(customer);
+    }
+
+    @Test
+    void givenACustomerIdThetDoesNotExist_whenTryingToGetCustomerWithId_thenCustomerNotFoundExceptionIsThrown() {
+
+        Customer customer = new Customer.CustomerBuilder()
+                .setFirstname("Laurie")
+                .setLastname("Iula")
+                .setEmail("laurie@mail.com")
+                .setAddress(new Address(24, "rue Edith Cavell", 1180, "Uccle", "Belgium"))
+                .setPhoneNumber("0462587631")
+                .setUsername("laurie")
+                .setPassword("laurie")
+                .createCustomer();
+        customerService.saveCustomer(customer);
+
+        Assertions.assertThatExceptionOfType(CustomerNotFoundException.class).isThrownBy(() -> customerService.getCustomerById("NotExistingId"));
     }
 }
