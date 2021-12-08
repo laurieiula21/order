@@ -30,6 +30,8 @@ class OrderServiceTest {
                 .setEmail("laurie@mail.com")
                 .setAddress(new Address(65, "Rochaval street", 1180, "Uccle", "Belgium"))
                 .setPhoneNumber("0432587632")
+                .setUsername("laurie")
+                .setPassword("laurie")
                 .createCustomer();
 
         Item item = new Item.ItemBuilder()
@@ -64,6 +66,8 @@ class OrderServiceTest {
                 .setEmail("laurie@mail.com")
                 .setAddress(new Address(65, "Rochaval street", 1180, "Uccle", "Belgium"))
                 .setPhoneNumber("0432587632")
+                .setUsername("laurie")
+                .setPassword("laurie")
                 .createCustomer();
 
         Item item = new Item.ItemBuilder()
@@ -102,6 +106,8 @@ class OrderServiceTest {
                 .setEmail("laurie@mail.com")
                 .setAddress(new Address(65, "Rochaval street", 1180, "Uccle", "Belgium"))
                 .setPhoneNumber("0432587632")
+                .setUsername("laurie")
+                .setPassword("laurie")
                 .createCustomer();
 
         Item item = new Item.ItemBuilder()
