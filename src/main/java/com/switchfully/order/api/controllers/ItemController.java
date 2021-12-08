@@ -27,17 +27,22 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto createItem(@RequestHeader(required = false) String authorization, @RequestBody ItemDto itemDto){
         logger.info("Create item method is starting...");
-        logger.info(authorization);
         Admin.isAuthorized(authorization);
-        Item item = new Item.ItemBuilder()
-                .setName(itemDto.getName())
-                .setDescription(itemDto.getDescription())
-                .setPrice(itemDto.getPrice())
-                .setAmount(itemDto.getAmount())
-                .createItem();
+        Item item = itemMapper.mapDtoToItem(itemDto);
         Item savedItem = itemService.saveItem(item);
-        ItemDto savedItemDto = new ItemDto(savedItem.getId(), savedItem.getName(), savedItem.getDescription(), savedItem.getPrice(), savedItem.getAmount());
+        ItemDto savedItemDto = itemMapper.mapItemToItemDto(savedItem);
         logger.info("The create item method was successfully executed !");
         return savedItemDto;
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto updateItem(@RequestHeader(required = false) String authorization,@PathVariable("id") String id, @RequestBody ItemDto itemDto){
+        logger.info("Update item method is starting");
+        Admin.isAuthorized(authorization);
+        Item updatedItem = itemService.updateItem(id, itemDto);
+        ItemDto updatedItemDto = itemMapper.mapItemToItemDto(updatedItem);
+        logger.info("The update item method executed successfully");
+        return updatedItemDto;
     }
 }
