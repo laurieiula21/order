@@ -1,5 +1,6 @@
 package com.switchfully.order.domain;
 
+import com.switchfully.order.domain.exceptions.InvalidFieldValueException;
 import com.switchfully.order.domain.exceptions.MissingFieldException;
 
 import java.util.Objects;
@@ -17,6 +18,9 @@ public class Customer {
     private final String password;
 
     private Customer(String firstname, String lastname, String email, Address address, String phoneNumber, String username, String password) {
+        if (firstname == null || lastname == null || email == null || address == null || phoneNumber == null || username == null || password == null){
+            throw new MissingFieldException("Some fields have not been initialized");
+        }
         this.id = UUID.randomUUID().toString();
         this.firstname = firstname;
         this.lastname = lastname;

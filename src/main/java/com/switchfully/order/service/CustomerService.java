@@ -7,10 +7,7 @@ import com.switchfully.order.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,18 +27,13 @@ public class CustomerService {
         return customerRepository.addCustomer(customer);
     }
 
-    public Map<String, Customer> getCustomerRepository() {
-        return customerRepository.getCustomerList();
-    }
-
-    public String validateUsername(String username){
+    public void validateUsername(String username){
         List<Customer> customerFoundForUsername = customerRepository.getCustomerList().values().stream()
                 .filter(customer -> customer.getUsername().equals(username))
                 .collect(Collectors.toList());
         if (!customerFoundForUsername.isEmpty()){
             throw new UsernameAlreadyExistsException("The username " + username + " is already taken...");
         }
-        return username;
     }
 
     public Customer validateCustomerAuthorisation(String header){
@@ -55,5 +47,9 @@ public class CustomerService {
         }
         return customer;
 
+    }
+
+    public Collection<Customer> getAllCustomers() {
+        return customerRepository.getCustomerList().values();
     }
 }
